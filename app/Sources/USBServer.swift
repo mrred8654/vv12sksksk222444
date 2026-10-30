@@ -66,8 +66,8 @@ final class USBServer: ObservableObject {
             params.allowLocalEndpointReuse = true
             params.requiredLocalEndpoint = NWEndpoint.hostPort(host: "127.0.0.1", port: port)
 
-            guard let listener = try? NWListener(using: params, on: port) else {
-                setStatus("ошибка: порт \(portNum) недоступен")
+            guard let listener = try? NWListener(using: params) else {
+                setStatus("ошибка: listener порт \(portNum) недоступен")
                 continue
             }
             listener.stateUpdateHandler = { [weak self] state in
@@ -77,10 +77,16 @@ final class USBServer: ObservableObject {
                     setStatus("слушаю 127.0.0.1:\(portNum)")
                     setRunning(true)
                     pushStats()
+                case .waiting:
+                    setStatus("waiting: порт \(portNum) не готов (сеть/разрешение)")
+                case .setup:
+                    setStatus("setup: порт \(portNum) настраивается")
                 case .failed(let error):
                     setStatus("ошибка listener \(portNum): \(error)")
-                default:
+                case .cancelled:
                     break
+                @unknown default:
+                    setStatus("listener \(portNum): неизвестное состояние")
                 }
             }
             listener.newConnectionHandler = { [weak self] conn in
