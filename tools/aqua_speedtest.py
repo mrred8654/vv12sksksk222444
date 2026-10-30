@@ -16,6 +16,7 @@ CONTROL_PORT = 9943
 DATA_PORT = 9944
 CHUNK = 256 * 1024
 ZERO = bytes(CHUNK)
+MB8 = 8 * 1024 * 1024
 
 
 class ControlError(Exception):
@@ -74,7 +75,7 @@ def mbps(b, ms):
 
 
 def main():
-    mb = int(sys.argv[1]) if len(sys.argv) > 1 else 33
+    mb = int(sys.argv[1]) if len(sys.argv) > 1 else 16
     total = mb * 1024 * 1024
 
     ctl_sock = connect(CONTROL_PORT)
@@ -92,6 +93,7 @@ def main():
 
     print("\n[RX: ПК -> iPhone]", flush=True)
     data = connect(DATA_PORT)
+    data.settimeout(30)
     ctl_sock.sendall(f"RX {total}\n".encode())
     ready = ctl.wait_line()
     if not ready.startswith("READY RX"):
@@ -107,7 +109,10 @@ def main():
             break
         n = min(CHUNK, total - sent)
         data.sendall(ZERO[:n])
+        prev = sent
         sent += n
+        if sent // MB8 > prev // MB8:
+            print(f"  RX прогресс: {sent // 1048576}/{mb} МБ", flush=True)
     if done is None:
         line = ctl.wait_line(15)
         if not line.startswith("DONE RX"):
@@ -122,6 +127,7 @@ def main():
 
     print("\n[TX: iPhone -> ПК]", flush=True)
     data = connect(DATA_PORT)
+    data.settimeout(30)
     ctl_sock.sendall(f"TX {total}\n".encode())
     ready = ctl.wait_line()
     if not ready.startswith("READY TX"):
@@ -134,7 +140,10 @@ def main():
         if not chunk:
             print("ERR: канал данных закрылся раньше времени")
             sys.exit(1)
+        prev = got
         got += len(chunk)
+        if got // MB8 > prev // MB8:
+            print(f"  TX прогресс: {got // 1048576}/{mb} МБ", flush=True)
     pc_ms = max(int((time.perf_counter() - t0) * 1000), 1)
     line = ctl.wait_line(15)
     if not line.startswith("DONE TX"):

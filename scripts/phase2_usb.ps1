@@ -27,5 +27,5 @@ Start-Sleep -Milliseconds 2000
 if (-not $NoTest) {
     Write-Host ""
     Write-Host "== Speed test through tunnel =="
-    & py "$PSScriptRoot\..\tools\aqua_speedtest.py" 33
+    & py "$PSScriptRoot\..\tools\aqua_speedtest.py" 16
 }
