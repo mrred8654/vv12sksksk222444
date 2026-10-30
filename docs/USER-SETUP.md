@@ -23,7 +23,10 @@ https://www.apple.com/itunes/download/win64
 ## 4. Первый билд: push и артефакт
 
 1. Открой PowerShell: `cd $env:USERPROFILE\AquaVR`
-2. Запусти `.\scripts\push.ps1`
+2. Если PowerShell пишет «выполнение сценариев отключено» — один раз выполни
+   `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser` (ответить Y) и повтори.
+3. Запусти `.\scripts\push.ps1`  
+   (или просто двойной клик по `scripts\push.bat` — политика не нужна)
    - В первый раз откроется браузер с логином GitHub — залогинься, всё.
 3. На GitHub: вкладка **Actions** → job «iOS build (unsigned IPA)» → жди зелёную галочку (~4–6 мин).
 4. Внизу job'а скачай **AquaVR-unsigned-ipa** (zip с ipa внутри, распакуй).
