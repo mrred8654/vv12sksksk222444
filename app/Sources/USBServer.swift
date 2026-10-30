@@ -24,6 +24,7 @@ final class USBServer: ObservableObject {
     @Published private(set) var dataInMB = 0
     @Published private(set) var dataOutMB = 0
     @Published private(set) var lastTestLine = "нет тестов"
+    @Published private(set) var connDebug = ""
 
     // Внутреннее состояние (все обращения — с self.queue)
     private let queue = DispatchQueue(label: "com.mrred8654.aquavr.usb")
@@ -113,10 +114,12 @@ final class USBServer: ObservableObject {
     }
 
     private func handle(_ conn: NWConnection, control: Bool) {
+        let portTag = control ? 9943 : 9944
         conn.stateUpdateHandler = { [weak self] state in
             guard let self = self else { return }
             switch state {
             case .ready:
+                self.setConnDebug("conn \(portTag): ready")
                 if control {
                     self.controlConn = conn
                     self.controlIn = ""
@@ -126,17 +129,27 @@ final class USBServer: ObservableObject {
                 }
                 self.connectionsCount += 1
                 self.pushStats()
-            case .failed, .cancelled:
+                self.recvLoop(conn, control: control)
+            case .setup:
+                self.setConnDebug("conn \(portTag): setup")
+            case .waiting:
+                self.setConnDebug("conn \(portTag): waiting")
+            case .failed(let error):
+                self.setConnDebug("conn \(portTag): failed: \(error)")
                 if control && self.controlConn === conn { self.controlConn = nil }
                 if !control && self.dataConn === conn { self.dataConn = nil }
                 if self.connectionsCount > 0 { self.connectionsCount -= 1 }
                 self.pushStats()
-            default:
-                break
+            case .cancelled:
+                if control && self.controlConn === conn { self.controlConn = nil }
+                if !control && self.dataConn === conn { self.dataConn = nil }
+                if self.connectionsCount > 0 { self.connectionsCount -= 1 }
+                self.pushStats()
+            @unknown default:
+                self.setConnDebug("conn \(portTag): unknown state")
             }
         }
         conn.start(queue: queue)
-        recvLoop(conn, control: control)
     }
 
     private func recvLoop(_ conn: NWConnection, control: Bool) {
@@ -281,6 +294,10 @@ final class USBServer: ObservableObject {
             self.running = value
             if let t = statusText { self.status = t }
         }
+    }
+
+    private func setConnDebug(_ text: String) {
+        DispatchQueue.main.async { [weak self] in self?.connDebug = text }
     }
 
     private func megabytes(_ bytes: UInt64) -> Int {
