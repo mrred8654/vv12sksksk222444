@@ -126,6 +126,7 @@ final class USBServer: ObservableObject {
                     self.sendControlSync("OK AquaUSB 0.1 ready")
                 } else {
                     self.dataConn = conn
+                    self.pumpTx()
                 }
                 self.connectionsCount += 1
                 self.pushStats()
