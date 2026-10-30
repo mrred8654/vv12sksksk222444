@@ -26,6 +26,7 @@ targets:
           - UIInterfaceOrientationLandscapeLeft
           - UIInterfaceOrientationLandscapeRight
         CFBundleDisplayName: AquaVR
+        NSLocalNetworkUsageDescription: "AquaVR принимает USB-туннель на локальных портах 9943/9944."
 schemes:
   AquaVR:
     build:

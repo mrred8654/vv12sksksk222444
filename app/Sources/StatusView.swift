@@ -3,6 +3,7 @@ import CoreMotion
 
 struct StatusView: View {
     @State private var tracking = false
+    @ObservedObject private var usb = USBServer.shared
     @State private var pitch = "0.0"
     @State private var roll = "0.0"
     @State private var yaw = "0.0"
@@ -33,6 +34,22 @@ struct StatusView: View {
                             .font(.footnote)
                             .foregroundStyle(.secondary)
                     }
+                }
+                Section("USB (Фаза 2)") {
+                    Button {
+                        if usb.running { usb.stop() } else { usb.start() }
+                    } label: {
+                        Label(usb.running ? "Остановить USB" : "Старт USB 9943/9944",
+                              systemImage: "cable.connector")
+                    }
+                    Text("Статус: \(usb.status)")
+                    Text("Подключений: \(usb.connections)")
+                    Text("IN: \(usb.dataInMB) МБ   OUT: \(usb.dataOutMB) МБ")
+                        .monospacedDigit()
+                    Text("Тест: \(usb.lastTestLine)")
+                    Text("Слушаем только 127.0.0.1 — кабель, ноль Wi-Fi.")
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
                 }
                 Section("О телефоне") {
                     Label("Модель: \(modelIdentifier())", systemImage: "iphone")
