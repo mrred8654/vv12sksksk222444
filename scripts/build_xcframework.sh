@@ -23,6 +23,18 @@ rm -rf "$ROOT/ALVR/target" "$ROOT/ALVR/build" alvrrepack ALVRClientCore.xcframew
 
 unset SDKROOT
 
+# Apply AquaVR USB-only patches to client_core (disable UDP discovery broadcast,
+# fixed microphone sample rate without opening the mic device). Idempotent.
+if git -C ALVR apply --check "$ROOT/scripts/client_core_patches.patch" 2>/dev/null; then
+    git -C ALVR apply "$ROOT/scripts/client_core_patches.patch"
+    echo "Applied AquaVR client_core patches"
+elif git -C ALVR apply --reverse --check "$ROOT/scripts/client_core_patches.patch" 2>/dev/null; then
+    echo "AquaVR client_core patches already applied"
+else
+    echo "ERROR: cannot apply client_core patches" >&2
+    exit 1
+fi
+
 CARGO_TARGET_DIR=ALVR/target cargo build \
     --manifest-path ALVR/Cargo.toml \
     --target=aarch64-apple-ios \
