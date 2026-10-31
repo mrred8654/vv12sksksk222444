@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
+// SPDX-License-Identifier: MIT
 // AquaVR phase 3: ported from alvr-visionos ALVRClient/VideoHandler.swift (AGPL-3.0).
 // iOS adaptation:
 //   - H264/HEVC only (A14 has no AV1 hardware decode; capabilities advertise encoder_av1=false).

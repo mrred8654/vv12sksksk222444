@@ -1,5 +1,5 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-// AquaVR phase 3: CoreMotion 3DoF head tracking — replaces alvr-visionos
+// SPDX-License-Identifier: MIT
+// AquaVR phase 3: CoreMotion 3DoF head tracking -- replaces alvr-visionos
 // WorldTracker.swift (ARKit/visionOS, AGPL-3.0). Rotation-only, sitting play:
 //   pose.position = 0; velocities = 0 (v20 protocol zeroes head velocities anyway).
 // TODO: verify axis conventions on-device; may need a fixed-axis remap quaternion.

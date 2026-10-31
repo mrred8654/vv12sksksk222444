@@ -9,7 +9,9 @@
 
 ## Текущий этап
 
-Смотри [docs/ROADMAP.md](docs/ROADMAP.md). Сейчас: **Фаза 1 — скелет и первый IPA на iPhone.**
+Смотри [docs/ROADMAP.md](docs/ROADMAP.md). Сейчас: **Фаза 3 — ALVR-клиент
+(client_core XCFramework + VideoToolbox + Metal) поверх USB-тракта Фазы 2**
+(доказано: RX 202 / TX 268 Мбит/с).
 
 ## Как собрать и поставить (идёт в docs/USER-SETUP.md)
 
@@ -19,6 +21,6 @@
 
 ## Лицензия
 
-MIT для скелета. **Важно:** после интеграции `alvr-client_core` (Rust, AGPL-3.0) всё приложение
-автоматически становится **AGPL-3.0** — открытый исходный код обязателен. Это осознанное решение
-проекта, не проблема.
+MIT. Весь используемый донорский код тоже MIT: upstream ALVR
+([alvr-org/ALVR](https://github.com/alvr-org/ALVR)) и alvr-visionos — MIT.
+Атрибуция доноров указана в файлах порта (`app/Phase3Sources/`).

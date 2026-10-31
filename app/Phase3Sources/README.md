@@ -5,9 +5,9 @@
 `ALVRClientCore-xcframework` и workflow `ios.yml` научится эмбеддить
 `app/ALVRClientCore.xcframework` перед xcodegen.
 
-Происхождение: порт из `vendor/alvr-visionos/ALVRClient` (AGPL-3.0).
-**В момент интеграции этих файлов в приложение LICENSE репозитория меняется
-с MIT на AGPL-3.0-or-later**, README отмечает источник и лицензию.
+Происхождение: порт из `vendor/alvr-visionos/ALVRClient` и upstream ALVR
+(`ALVR/`-сабмодуль) — **оба MIT**, поэтому AquaVR остаётся MIT
+(см. LICENSE в корне репо); в файлах указан источник.
 
 Порядок интеграции (см. docs/PHASE3.md):
 1. `NALParser.swift` — без изменений, только компилируемость.

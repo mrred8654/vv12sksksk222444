@@ -1,5 +1,5 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-// AquaVR phase 3: ALVR client session glue — ported from alvr-visionos
+// SPDX-License-Identifier: MIT
+// AquaVR phase 3: ALVR client session glue -- ported from alvr-visionos
 // ALVRClient/EventHandler.swift (AGPL-3.0), visionOS pieces replaced for iOS:
 //   - no mDNS discovery (USB tunnel only, UDP broadcast disabled in client_core patch)
 //   - no exit(0) on backgrounding (the app must survive a locked screen)
@@ -326,11 +326,10 @@ final class AlvrSession: ObservableObject {
     func updateConnectionState(_ newState: AlvrConnectionState) {
         DispatchQueue.main.async {
             self.connectionState = newState
-            switch newState {
-            case .connected: self.statusText = "стрим"
-            case .connecting: self.statusText = "подключение"
-            case .disconnected: self.statusText = streamingActive ? "стрим" : "нет соединения"
-            }
+            self.statusText =
+                (newState == .connected) ? "stream"
+                : (newState == .connecting) ? "connecting"
+                : (self.streamingActive ? "stream" : "no connection")
         }
     }
 

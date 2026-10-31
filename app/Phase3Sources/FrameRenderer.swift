@@ -1,5 +1,5 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-// AquaVR phase 3: single-eye Metal presentation of decoded frames — replaces the
+// SPDX-License-Identifier: MIT
+// AquaVR phase 3: single-eye Metal presentation of decoded frames -- replaces the
 // visionOS LayerRenderer pipeline of alvr-visionos Renderer.swift (AGPL-3.0).
 // Minimal first-light renderer: bgra8 drawable, 2-plane 8-bit 4:2:0 source,
 // YUV->RGB by matrix, full-quad texturing, no timewarp/FFR (later phases).

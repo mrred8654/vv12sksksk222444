@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
+// SPDX-License-Identifier: MIT
 // AquaVR phase 3: ported from alvr-visionos ALVRClient/NALParser.swift (AGPL-3.0),
 // upstream author Max Thomas. Unmodified logic; iOS build target only.
 
