@@ -5,6 +5,7 @@ xcuserdata/
 *.ipa
 Payload/
 artifacts/
+ALVRClientCore.xcframework/
 vendor/
 .DS_Store
 *.pdb

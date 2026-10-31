@@ -1,0 +1,33 @@
+name: Rust XCFramework (ALVRClientCore)
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'ALVR/**'
+      - 'scripts/framework_template/**'
+      - 'scripts/build_xcframework.sh'
+      - '.github/workflows/rust.yml'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Setup Rust (aarch64-apple-ios)
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          targets: aarch64-apple-ios
+
+      - name: Build ALVRClientCore.xcframework
+        run: bash scripts/build_xcframework.sh
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ALVRClientCore-xcframework
+          path: ALVRClientCore.xcframework
+          retention-days: 30
