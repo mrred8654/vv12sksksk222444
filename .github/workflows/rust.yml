@@ -31,3 +31,9 @@ jobs:
           name: ALVRClientCore-xcframework
           path: ALVRClientCore.xcframework
           retention-days: 30
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: alvr_client_core_h
+          path: ALVR/build/alvr_client_core.h
+          retention-days: 30

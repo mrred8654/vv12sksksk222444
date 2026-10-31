@@ -6,8 +6,8 @@ xcuserdata/
 Payload/
 artifacts/
 ALVRClientCore.xcframework/
-cargo_build.log
-cbindgen.log
+ci_build.log
+xcodebuild.log
 vendor/
 .DS_Store
 *.pdb
